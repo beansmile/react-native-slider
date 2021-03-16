@@ -10,11 +10,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+
 import androidx.appcompat.widget.AppCompatSeekBar;
+
 import java.net.URL;
 import java.util.List;
 import java.util.Timer;
@@ -23,6 +26,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import javax.annotation.Nullable;
 
 /**
@@ -206,8 +210,10 @@ public class ReactSlider extends AppCompatSeekBar {
                 .getPackageName());
             bitmap = BitmapFactory.decodeResource(getResources(), drawableId);
           }
-
-          bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+          float density = getResources().getDisplayMetrics().density;
+          int size = (int) (15 * density);
+          Bitmap bitmapCopy = Bitmap.createScaledBitmap(bitmap, size, size, false);
+          bitmapDrawable = new BitmapDrawable(getResources(), bitmapCopy);
         } catch (Exception e) {
           e.printStackTrace();
         }
